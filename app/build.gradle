@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'jacoco'
+    id 'com.github.kt3k.coveralls'
 }
 
 android {
@@ -17,12 +20,48 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("${project.rootDir}/keystore/debug.keystore")
+            storePassword getLocalProperty('debugStorePassword', '\"\"')
+            keyAlias getLocalProperty('debugKeyAlias', '\"\"')
+            keyPassword getLocalProperty('debugKeyPassword', '\"\"')
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            storeFile file("${project.rootDir}/keystore/release.keystore")
+            storePassword getLocalProperty('storePassword', '\"\"')
+            keyAlias getLocalProperty('keyAlias', '\"\"')
+            keyPassword getLocalProperty('keyPassword', '\"\"')
         }
     }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            testCoverageEnabled project.hasProperty('coverage')
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions 'mode'
+    productFlavors {
+        staging {
+            dimension 'mode'
+            applicationIdSuffix ".staging"
+        }
+        production {
+            dimension 'mode'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,14 +71,60 @@ android {
     }
 }
 
-dependencies {
+jacoco {
+    toolVersion '0.8.6+'
+}
 
+task jacocoTestReport(type: JacocoReport) {
+    group = 'Reporting'
+    description = 'Generate Jacoco global coverage reports.'
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    // exclude auto-generated classes and tests
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*',
+    ]
+    def debugKotlinAppTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/stagingDebug", excludes: fileFilter)
+    def mainAppSrc = "${project.projectDir}/src/main/java"
+    getSourceDirectories().setFrom(mainAppSrc)
+    getClassDirectories().setFrom(debugKotlinAppTree)
+    def appAndroidTests = fileTree(dir: "${buildDir}/outputs/code_coverage/stagingDebugAndroidTest/connected", includes: ["*.ec"])
+    getExecutionData().setFrom("${buildDir}/jacoco/testStagingDebugUnitTest.exec", appAndroidTests)
+}
+
+coveralls {
+    def mainAppSrc = "${project.projectDir}/src/main/java"
+    sourceDirs = files([mainAppSrc]).flatten()
+}
+
+tasks.coveralls {
+    onlyIf { System.getenv('COVERALLS_REPO_TOKEN') }
+}
+
+dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    testImplementation 'junit:junit:4.13.1'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+String getLocalProperty(String key, String defaultValue) {
+    return project.localProperties.getProperty(key, defaultValue)
 }

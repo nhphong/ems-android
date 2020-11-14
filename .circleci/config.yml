@@ -1,0 +1,194 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@0.2.3
+
+jobs:
+  initialize:
+    executor: android/android
+    steps:
+      - checkout
+      - run:
+          name: Decode local properties
+          command: echo $ENCODED_LOCAL_PROPERTIES | base64 -di > ./local.properties
+      - run:
+          name: Decode google-services.json
+          command: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
+      - run:
+          name: Decode Google Cloud Service Account key
+          command: echo $GC_SERVICE_ACCOUNT_KEY | base64 -di > app/gc_service_account_key.json
+      - run:
+          name: Decode keystores
+          command: |
+            mkdir -p keystore
+            echo $DEBUG_KEYSTORE | base64 -di > ./keystore/debug.keystore
+            echo $RELEASE_KEYSTORE | base64 -di > ./keystore/release.keystore
+      - run:
+          name: Download Android dependencies
+          command: ./gradlew androidDependencies
+      - android/save-build-cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - local.properties
+            - app/google-services.json
+            - app/gc_service_account_key.json
+            - keystore/debug.keystore
+            - keystore/release.keystore
+
+  build_debug:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build staging-debug apk
+          command: ./gradlew -Pcoverage :app:assembleStagingDebug :app:assembleStagingDebugAndroidTest
+      - store_artifacts:
+          path: app/build/outputs/apk/staging/debug/app-staging-debug.apk
+          destination: app-staging-debug.apk
+      - persist_to_workspace:
+          root: .
+          paths:
+            - app/build/outputs/apk/staging/debug/app-staging-debug.apk
+            - app/build/outputs/apk/androidTest/staging/debug/app-staging-debug-androidTest.apk
+
+  build_release:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build production-release apk
+          command: ./gradlew :app:assembleProductionRelease
+      - store_artifacts:
+          path: app/build/outputs/apk/production/release/app-production-release.apk
+          destination: app-production-release.apk
+      # Persist release apk and mapping.txt
+
+  test_unit:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run unit tests
+          command: ./gradlew -Pcoverage :app:testStagingDebugUnitTest --no-daemon --max-workers 2
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
+      - persist_to_workspace:
+          root: .
+          paths:
+            - app/build/tmp
+            - app/build/jacoco
+
+  test_instrumented:
+    docker:
+      - image: google/cloud-sdk:latest
+    environment:
+      TERM: dumb
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Authenticate with Google Cloud
+          command: |
+            gcloud config set project ems-ea
+            gcloud auth activate-service-account firebase-adminsdk-48ihm@ems-ea.iam.gserviceaccount.com --key-file app/gc_service_account_key.json
+      - run:
+          name: Run instrumented test on Firebase Test Lab
+          command: |
+            gcloud firebase test android run \
+              --type instrumentation \
+              --app app/build/outputs/apk/staging/debug/app-staging-debug.apk \
+              --test app/build/outputs/apk/androidTest/staging/debug/app-staging-debug-androidTest.apk \
+              --device model=Pixel2,version=29,locale=en_US,orientation=portrait \
+              --environment-variables coverage=true,coverageFile=/sdcard/coverage.ec \
+              --directories-to-pull=/sdcard \
+              --results-dir $CIRCLE_WORKFLOW_ID \
+              --timeout 30m
+      - run:
+          name: Download instrumented test results from Firebase Test Lab
+          command: |
+            mkdir -p firebase
+            gsutil -m cp -r -U "`gsutil ls gs://test-lab-zsvfft5kph4nc-nwawnv5vk11xs | grep $CIRCLE_WORKFLOW_ID`*" ~/project/firebase/ | true
+      - store_artifacts:
+          path: firebase
+          destination: firebase
+      - persist_to_workspace:
+          root: .
+          paths:
+            - firebase
+
+  report_coverage:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - attach_workspace:
+          at: .
+      - run:
+          name: Move Firebase coverage report to the correct place
+          command: |
+            mkdir -p app/build/outputs/code_coverage/stagingDebugAndroidTest/connected
+            cp firebase/Pixel2-29-en_US-portrait/artifacts/*coverage.ec app/build/outputs/code_coverage/stagingDebugAndroidTest/connected/coverage.ec
+      - run:
+          name: Generate JaCoCo report
+          command: ./gradlew :app:jacocoTestReport
+      - run:
+          name: Rename the report directory
+          command: mv app/build/reports/jacoco/jacocoTestReport app/build/reports/jacoco/test
+      - run:
+          name: Upload coverage report to coveralls.io
+          command: ./gradlew -PciBuild=true coveralls
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+
+  deploy:
+    executor: android/android
+    steps:
+      - checkout
+      - run:
+          name: Do nothing for now
+          command: echo "Do nothing for now"
+
+workflows:
+  version: 2.1
+  workflow:
+    jobs:
+      - initialize
+      - build_release:
+          requires:
+            - initialize
+      - test_unit:
+          requires:
+            - initialize
+      - build_debug:
+          requires:
+            - initialize
+      - test_instrumented:
+          requires:
+            - build_debug
+      - report_coverage:
+          requires:
+            - test_unit
+            - test_instrumented
+      - deploy:
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - build_release
+            - report_coverage
