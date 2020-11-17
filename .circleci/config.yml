@@ -167,7 +167,11 @@ workflows:
   version: 2.1
   workflow:
     jobs:
-      - initialize
+      - initialize:
+          filters:
+            branches:
+              only:
+                - main
       - build_release:
           requires:
             - initialize
@@ -185,10 +189,7 @@ workflows:
             - test_unit
             - test_instrumented
       - deploy:
-          filters:
-            branches:
-              only:
-                - main
           requires:
             - build_release
-            - report_coverage
+            - test_unit
+            - test_instrumented
