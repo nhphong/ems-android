@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_my_order"
+    app:startDestination="@id/myOrderFragment">
+
+    <fragment
+        android:id="@+id/myOrderFragment"
+        android:name="com.ea.ems.presentation.myorder.MyOrderFragment"
+        android:label="MyOrderFragment"
+        tools:layout="@layout/fragment_my_order" />
+</navigation>

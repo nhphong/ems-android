@@ -1,6 +1,7 @@
 package com.ea.ems
 
 import androidx.test.core.app.ActivityScenario
+import com.ea.ems.presentation.main.MainActivity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

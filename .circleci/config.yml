@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Decode local properties
-          command: echo $ENCODED_LOCAL_PROPERTIES | base64 -di > ./local.properties
+          command: echo $LOCAL_PROPERTIES | base64 -di > ./local.properties
       - run:
           name: Decode google-services.json
           command: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
@@ -167,11 +167,7 @@ workflows:
   version: 2.1
   workflow:
     jobs:
-      - initialize:
-          filters:
-            branches:
-              only:
-                - main
+      - initialize
       - build_release:
           requires:
             - initialize

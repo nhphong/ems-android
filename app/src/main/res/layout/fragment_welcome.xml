@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlackMineShaft">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeUpperPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.15"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_welcome_upper_part" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeMiddlePart"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.67"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_welcome" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeLowerPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/bg_welcome_lower_part" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeLogoEms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_32sdp"
+        android:adjustViewBounds="true"
+        android:tint="@color/colorGreenAtlantis"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32"
+        app:srcCompat="@drawable/logo_ems" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeFeelWellLiveWell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/welcome_feel_well_live_well"
+        android:textColor="@color/colorGreenAtlantis"
+        android:textSize="@dimen/_11sdp"
+        android:theme="@style/PrimaryText.AllCaps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivWelcomeLogoEms" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeBroughtToYouBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:text="@string/welcome_brought_to_you_by"
+        android:textColor="@color/colorSilver"
+        android:textSize="@dimen/_13ssp"
+        app:fontFamily="@font/opensans_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeFeelWellLiveWell" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeLogoEastAgile"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toStartOf="@id/tvWelcomeEastAgile"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeBroughtToYouBy"
+        app:srcCompat="@drawable/ic_eastagile" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeEastAgile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:text="@string/welcome_east_agile"
+        android:theme="@style/PrimaryText.AllCaps"
+        app:layout_constraintBottom_toBottomOf="@id/ivWelcomeLogoEastAgile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivWelcomeLogoEastAgile" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btWelcomeSignUp"
+        style="@style/PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_18sdp"
+        android:layout_marginEnd="@dimen/_18sdp"
+        android:text="@string/welcome_sign_up"
+        app:layout_constraintBottom_toTopOf="@id/tvWelcomeSkip"
+        app:layout_constraintTop_toBottomOf="@id/ivWelcomeLogoEastAgile"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeAlreadyHaveAnAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/welcome_already_have_account"
+        android:textColor="@color/colorConcrete"
+        android:theme="@style/PrimaryText"
+        app:layout_constraintEnd_toStartOf="@id/tvWelcomeLogin"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btWelcomeSignUp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeLogin"
+        style="@style/PrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:text="@string/welcome_log_in"
+        android:textColor="@color/colorGreenAtlantis"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvWelcomeAlreadyHaveAnAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tvWelcomeAlreadyHaveAnAccount" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:alpha="0.6"
+        android:background="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/tvWelcomeOrContinueWith"
+        app:layout_constraintEnd_toStartOf="@id/tvWelcomeOrContinueWith"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvWelcomeOrContinueWith" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeOrContinueWith"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:alpha="0.6"
+        android:text="@string/welcome_or_continue_with"
+        android:theme="@style/PrimaryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeAlreadyHaveAnAccount" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:alpha="0.6"
+        android:background="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/tvWelcomeOrContinueWith"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvWelcomeOrContinueWith"
+        app:layout_constraintTop_toTopOf="@id/tvWelcomeOrContinueWith" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWelcomeSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_45sdp"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:drawablePadding="@dimen/_5sdp"
+        android:gravity="center"
+        android:text="@string/general_skip"
+        android:textColor="@color/colorGreenAtlantis"
+        android:theme="@style/PrimaryText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeFacebook"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toStartOf="@id/ivWelcomeGoogle"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeOrContinueWith"
+        app:srcCompat="@drawable/ic_facebook" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivWelcomeGoogle"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivWelcomeFacebook"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeOrContinueWith"
+        app:srcCompat="@drawable/ic_google" />
+</androidx.constraintlayout.widget.ConstraintLayout>
