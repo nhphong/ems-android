@@ -1,5 +1,8 @@
 version: 2.1
 
+# TODO cache .gradle and .m2 for gradlew
+# Please also update for Phoenix project
+
 orbs:
   android: circleci/android@0.2.3
 
@@ -189,3 +192,7 @@ workflows:
             - build_release
             - test_unit
             - test_instrumented
+          filters:
+            branches:
+              only:
+                - main
