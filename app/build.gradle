@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'kotlin-allopen'
     id 'com.google.gms.google-services'
     id 'jacoco'
     id 'com.github.kt3k.coveralls'
@@ -71,6 +74,10 @@ android {
     }
 }
 
+allOpen {
+    annotation("com.ea.ems.core.annotation.AllOpen")
+}
+
 jacoco {
     toolVersion '0.8.6+'
 }
@@ -118,11 +125,41 @@ dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Google Play Services
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
+
+    // Facebook SDK
+    implementation 'com.facebook.android:facebook-login:5.15.3'
+
+    // Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+
+    // Fragment
+    implementation "androidx.fragment:fragment-ktx:1.3.0-beta01"
+
+    // Activity
+    implementation 'androidx.activity:activity-ktx:1.2.0-beta01'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Koin
+    implementation "org.koin:koin-android:2.1.5"
+    implementation "org.koin:koin-androidx-viewmodel:2.1.5"
+
+    // sdp and ssp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
     testImplementation 'junit:junit:4.13.1'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "org.koin:koin-test:2.1.5"
 }
 
 String getLocalProperty(String key, String defaultValue) {

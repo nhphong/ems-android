@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="toolbar_height">@dimen/_92sdp</dimen>
+
+    <!-- Overridden values -->
+    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/_50sdp</dimen>
+</resources>

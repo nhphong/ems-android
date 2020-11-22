@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <inset android:insetLeft="@dimen/_9sdp" android:insetRight="@dimen/_9sdp">
+            <shape android:shape="rectangle">
+                <solid android:color="@color/colorGreenAtlantis" />
+                <corners android:radius="@dimen/_6sdp" />
+            </shape>
+        </inset>
+    </item>
+    <item>
+        <inset android:insetLeft="@dimen/_9sdp" android:insetRight="@dimen/_9sdp">
+            <shape android:shape="rectangle">
+                <solid android:color="@android:color/transparent" />
+            </shape>
+        </inset>
+    </item>
+</selector>
