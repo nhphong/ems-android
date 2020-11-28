@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.ea.ems.core.annotation.AllOpen
 import com.ea.ems.core.util.FragmentLifeCycleCallbacks
 import com.ea.ems.core.util.SingleLiveEvent
 import com.ea.ems.core.util.hideKeyboard
@@ -59,7 +60,7 @@ abstract class BaseFragment : Fragment() {
         bindViewModel()
     }
 
-    protected fun initUI() {
+    protected open fun initUI() {
         if (this is NoBottomBar) {
             mainViewModel.hideBottomBar()
         } else {

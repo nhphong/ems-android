@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.ea.ems.R
 import com.ea.ems.core.util.FacebookLogInManager
 import com.ea.ems.core.util.GoogleSignInManager
+import com.ea.ems.core.util.NotificationUtil
 import com.ea.ems.presentation.base.BaseFragment
 import com.ea.ems.presentation.base.NoBottomBar
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -16,6 +17,8 @@ class WelcomeFragment : BaseFragment(), NoBottomBar {
     private val facebookLogInManager: FacebookLogInManager by inject()
 
     private val googleSignInManager: GoogleSignInManager by inject()
+
+    private val notificationUtil: NotificationUtil by inject()
 
     override val layoutId = R.layout.fragment_welcome
 
@@ -42,6 +45,7 @@ class WelcomeFragment : BaseFragment(), NoBottomBar {
         }
         tvWelcomeSkip.setOnClickListener {
             mainViewModel.moveToHomeScreen()
+            notificationUtil.displayNotification("TITLE", "MESSAGE", "DETAILS")
         }
     }
 

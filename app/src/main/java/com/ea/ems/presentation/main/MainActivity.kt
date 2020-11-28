@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationBar() {
         val navGraphIds = listOf(
             R.navigation.nav_graph_home,
-            R.navigation.nav_graph_my_order,
+            R.navigation.nav_graph_order_history,
             R.navigation.nav_graph_schedule,
             R.navigation.nav_graph_info
         )

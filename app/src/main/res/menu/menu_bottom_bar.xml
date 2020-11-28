@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_nav_item_home" />
     <item
-        android:id="@+id/nav_graph_my_order"
+        android:id="@+id/nav_graph_order_history"
         android:icon="@android:drawable/stat_sys_phone_call_forward"
-        android:title="@string/bottom_nav_item_my_order" />
+        android:title="@string/bottom_nav_item_order_history" />
     <item
         android:id="@+id/nav_graph_schedule"
         android:icon="@android:drawable/ic_btn_speak_now"

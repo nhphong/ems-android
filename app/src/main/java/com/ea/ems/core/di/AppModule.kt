@@ -2,6 +2,8 @@ package com.ea.ems.core.di
 
 import com.ea.ems.core.util.DispatcherProvider
 import com.ea.ems.core.util.DispatcherProviderImpl
+import com.ea.ems.core.util.NotificationUtil
+import com.ea.ems.core.util.NotificationUtilImpl
 import com.ea.ems.core.view.DialogUtil
 import com.ea.ems.core.view.DialogUtilImpl
 import com.ea.ems.core.view.Toaster
@@ -44,4 +46,5 @@ val utilModule = module {
     single<DispatcherProvider> { DispatcherProviderImpl() }
     single<Toaster> { ToasterImpl(get()) }
     single<DialogUtil> { DialogUtilImpl() }
+    single<NotificationUtil> { NotificationUtilImpl(get()) }
 }
