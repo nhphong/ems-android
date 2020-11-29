@@ -16,7 +16,7 @@ class LatestMenuFragment : BaseFragment() {
         super.bindViewModel()
         viewModel.run {
             latestMenu.observe {
-                ivLatestMenu.loadImageUrl(it.imagePath)
+                ivLatestMenu.loadImageUrl(it.imageUrl)
             }
         }
     }

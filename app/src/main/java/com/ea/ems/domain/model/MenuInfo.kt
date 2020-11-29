@@ -1,6 +1,8 @@
 package com.ea.ems.domain.model
 
+import java.util.*
+
 data class MenuInfo(
-    val imagePath: String,
-    val createdAt: Long
+    val imageUrl: String?,
+    val createdAt: Date?
 )
