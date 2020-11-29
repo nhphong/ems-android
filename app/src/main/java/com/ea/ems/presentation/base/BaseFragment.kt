@@ -10,9 +10,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.ea.ems.core.annotation.AllOpen
+import androidx.lifecycle.LiveData
 import com.ea.ems.core.util.FragmentLifeCycleCallbacks
-import com.ea.ems.core.util.SingleLiveEvent
 import com.ea.ems.core.util.hideKeyboard
 import com.ea.ems.core.view.DialogUtil
 import com.ea.ems.core.view.Toaster
@@ -92,7 +91,7 @@ abstract class BaseFragment : Fragment() {
         dialogUtil.hideProgressDialog()
     }
 
-    protected fun <T> SingleLiveEvent<T>.observe(block: (T) -> Unit) {
+    protected fun <T> LiveData<T>.observe(block: (T) -> Unit) {
         observe(viewLifecycleOwner, { block(it) })
     }
 }

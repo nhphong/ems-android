@@ -6,6 +6,10 @@ import com.ea.ems.core.annotation.AllOpen
 import com.ea.ems.core.util.DispatcherProvider
 import com.ea.ems.core.util.SingleLiveEvent
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
@@ -39,6 +43,16 @@ class BaseViewModel : ViewModel(), KoinComponent {
 
     suspend fun <T> runIO(block: suspend CoroutineScope.() -> T): T {
         return withContext(dispatcherProvider.io, block)
+    }
+
+    suspend fun <T> Flow<T>.collectAndCatch(block: (data: T) -> Unit) {
+        flowOn(dispatcherProvider.io)
+            .catch { throwable ->
+                Timber.e(throwable)
+                errorMessage.value = throwable.message
+            }.collect {
+                block.invoke(it)
+            }
     }
 
     protected fun showLoading() {

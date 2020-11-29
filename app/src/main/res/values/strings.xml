@@ -5,7 +5,7 @@
 
     <string name="app_name">Eat More Salad</string>
     <string name="bottom_nav_item_home">Home</string>
-    <string name="bottom_nav_item_order_history">Order History</string>
+    <string name="bottom_nav_item_order_history">History</string>
     <string name="bottom_nav_item_schedule">Schedule</string>
     <string name="bottom_nav_item_info">Info</string>
 

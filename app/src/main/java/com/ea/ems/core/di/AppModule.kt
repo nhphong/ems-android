@@ -9,9 +9,12 @@ import com.ea.ems.core.view.DialogUtilImpl
 import com.ea.ems.core.view.Toaster
 import com.ea.ems.core.view.ToasterImpl
 import com.ea.ems.data.repo.AuthRepositoryImpl
+import com.ea.ems.data.repo.EmsRepositoryImpl
 import com.ea.ems.domain.repo.AuthRepository
+import com.ea.ems.domain.repo.EmsRepository
 import com.ea.ems.domain.usecase.*
 import com.ea.ems.presentation.home.HomeViewModel
+import com.ea.ems.presentation.home.latestmenu.LatestMenuViewModel
 import com.ea.ems.presentation.info.InfoViewModel
 import com.ea.ems.presentation.main.MainViewModel
 import com.ea.ems.presentation.onboarding.login.LoginViewModel
@@ -26,6 +29,7 @@ val useCaseModule = module {
     factory<LogInWithFacebookUseCase> { LogInWithFacebookUseCaseImpl(get()) }
     factory<CheckLoginStateUseCase> { CheckLoginStateUseCaseImpl(get()) }
     factory<LogOutUseCase> { LogOutUseCaseImpl(get()) }
+    factory<GetLatestMenuUseCase> { GetLatestMenuUseCaseImpl(get()) }
 }
 
 val viewModelModule = module {
@@ -36,10 +40,12 @@ val viewModelModule = module {
     viewModel { SignupViewModel() }
     viewModel { HomeViewModel() }
     viewModel { InfoViewModel() }
+    viewModel { LatestMenuViewModel(get()) }
 }
 
 val repositoryModule = module {
-    factory<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get()) }
+    single<EmsRepository> { EmsRepositoryImpl(get()) }
 }
 
 val utilModule = module {

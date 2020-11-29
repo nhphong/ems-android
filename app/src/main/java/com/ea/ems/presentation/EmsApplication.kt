@@ -17,7 +17,8 @@ open class EmsApplication : Application() {
             useCaseModule,
             viewModelModule,
             repositoryModule,
-            utilModule
+            utilModule,
+            remoteDataSourceModule
         )
         startKoin {
             androidContext(this@EmsApplication)
